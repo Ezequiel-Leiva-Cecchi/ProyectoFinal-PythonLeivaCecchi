@@ -1,0 +1,22 @@
+{% extends 'padre.html' %}
+
+{% block title %}Buscar Película{% endblock %}
+
+{% block content %}
+  <h2>Buscar una película</h2>
+  <form method="get">
+    {{ form.as_p }}
+    <button type="submit">Buscar</button>
+  </form>
+
+  {% if resultados %}
+    <h3>Resultados:</h3>
+    <ul>
+      {% for peli in resultados %}
+        <li><strong>{{ peli.titulo }}</strong> ({{ peli.fecha_lanzamiento }}) - {{ peli.director.nombre }}</li>
+      {% endfor %}
+    </ul>
+  {% elif resultados is not none %}
+    <p>No se encontraron resultados.</p>
+  {% endif %}
+{% endblock %}

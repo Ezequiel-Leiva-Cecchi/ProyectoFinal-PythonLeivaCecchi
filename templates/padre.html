@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Películas{% endblock %}</title>
+</head>
+<body>
+  <h1>Catálogo de Películas</h1>
+  <nav>
+    <a href="{% url 'home' %}">Inicio</a> |
+    <a href="{% url 'buscar_pelicula' %}">Buscar</a>
+    {% if user.is_authenticated %}
+      | <a href="{% url 'logout' %}">Cerrar sesión</a>
+    {% else %}
+      | <a href="{% url 'login' %}">Iniciar sesión</a>
+      | <a href="{% url 'registro' %}">Registrarse</a>
+    {% endif %}
+  </nav>
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+</html>

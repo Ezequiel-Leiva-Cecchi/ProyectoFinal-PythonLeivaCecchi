@@ -10,15 +10,15 @@ def registro(request):
         if form.is_valid():
             usuario = form.save()
             login(request, usuario)
-            return redirect('index')
+            return redirect('peliculas_app/index')
     else:
         form = RegistroForm()
-    return render(request, 'peliculas/registro.html', {'form': form})
+    return render(request, 'peliculas_app/registro.html', {'form': form})
 
 
 def index(request):
-    return render(request, 'peliculas/index.html')
-
+    peliculas = Pelicula.objects.all()
+    return render(request, 'peliculas_app/index.html', {'peliculas': peliculas})
 
 def buscar_pelicula(request):
     resultados = []
@@ -26,4 +26,4 @@ def buscar_pelicula(request):
     if form.is_valid():
         titulo = form.cleaned_data['titulo']
         resultados = Pelicula.objects.filter(titulo__icontains=titulo)
-    return render(request, 'peliculas/buscar.html', {'form': form, 'resultados': resultados})
+    return render(request, 'peliculas_app/buscar.html', {'form': form, 'resultados': resultados})

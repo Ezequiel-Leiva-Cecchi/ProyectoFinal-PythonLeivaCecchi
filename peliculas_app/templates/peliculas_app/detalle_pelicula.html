@@ -1,0 +1,22 @@
+{% extends 'padre.html' %}
+
+{% block title %}{{ pelicula.titulo }}{% endblock %}
+
+{% block content %}
+  <h2>{{ pelicula.titulo }}</h2>
+
+  {% if pelicula.imagen %}
+    <img src="{{ pelicula.imagen.url }}" alt="{{ pelicula.titulo }}" style="width: 300px; border-radius: 8px;">
+  {% endif %}
+
+  <p><strong>Estreno:</strong> {{ pelicula.fecha_lanzamiento }}</p>
+  <p><strong>Director:</strong> {{ pelicula.director }}</p>
+  <p><strong>Géneros:</strong>
+    {% for genero in pelicula.generos.all %}
+      {{ genero.nombre }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+  <p><strong>Resumen:</strong> {{ pelicula.mini_resumen }}</p>
+
+  <a href="{% url 'index' %}">← Volver al inicio</a>
+{% endblock %}

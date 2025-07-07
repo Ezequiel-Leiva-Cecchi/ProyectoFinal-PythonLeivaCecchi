@@ -22,7 +22,7 @@ class Pelicula(models.Model):
     mini_resumen = models.TextField()
     director = models.ForeignKey(Director, on_delete=models.CASCADE)
     generos = models.ManyToManyField(Genero)
-    imagen = models.URLField(blank=True, null=True)  
+    imagen = models.ImageField(upload_to='posters/', blank=True, null=True)
 
     def __str__(self):
         return self.titulo

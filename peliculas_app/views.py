@@ -5,16 +5,23 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
 
+from django.contrib.auth import login
+from django.contrib import messages
+
 def registro(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = RegistroForm(request.POST)
         if form.is_valid():
             usuario = form.save()
             login(request, usuario)
-            return redirect("peliculas_app/index")
+            return redirect('index')
+        else:
+            print("ERRORES DEL FORMULARIO:")
+            print(form.errors)  
     else:
         form = RegistroForm()
-    return render(request, "peliculas_app/registro.html", {"form": form})
+    return render(request, 'peliculas_app/registro.html', {'form': form})
+
 
 
 @login_required

@@ -3,20 +3,39 @@
 {% block title %}Buscar Película{% endblock %}
 
 {% block content %}
-  <h2>Buscar una película</h2>
-  <form method="get">
-    {{ form.as_p }}
-    <button type="submit">Buscar</button>
-  </form>
+<h2>Buscar una película</h2>
+<form method="get">
+  {{ form.as_p }}
+  <button type="submit">Buscar</button>
+</form>
 
-  {% if resultados %}
-    <h3>Resultados:</h3>
-    <ul>
-      {% for peli in resultados %}
-        <li><strong>{{ peli.titulo }}</strong> ({{ peli.fecha_lanzamiento }}) - {{ peli.director.nombre }}</li>
-      {% endfor %}
-    </ul>
-  {% elif resultados is not none %}
-    <p>No se encontraron resultados.</p>
-  {% endif %}
+{% if resultados %}
+  <h3>Resultados:</h3>
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+    {% for peli in resultados %}
+      <div style="border: 1px solid #ccc; border-radius: 10px; width: 250px; padding: 15px; background: white;">
+        {% if peli.imagen %}
+          <img src="{{ peli.imagen.url }}" alt="{{ peli.titulo }}" style="width: 100%; height: auto; border-radius: 8px;">
+        {% else %}
+          <div style="width: 100%; height: 150px; background-color: #eee; display: flex; align-items: center; justify-content: center;">
+            <span>Sin imagen</span>
+          </div>
+        {% endif %}
+        <h3>{{ peli.titulo }}</h3>
+        <p><strong>Estreno:</strong> {{ peli.fecha_lanzamiento }}</p>
+        <p><strong>Director:</strong> {{ peli.director }}</p>
+        <p><strong>Géneros:</strong>
+          {% for genero in peli.generos.all %}
+            {{ genero.nombre }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
+        <p>{{ peli.mini_resumen|truncatewords:20 }}</p>
+        <a href="{% url 'detalle_pelicula' peli.id %}" style="color: #4CAF50;">Ver más</a>
+      </div>
+    {% endfor %}
+  </div>
+{% elif resultados is not none %}
+  <p>No se encontraron resultados.</p>
+{% endif %}
+
 {% endblock %}

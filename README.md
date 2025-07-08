@@ -31,7 +31,54 @@ Seguí los pasos a continuación para ejecutar el proyecto localmente en tu máq
 ### 1. Clonar el repositorio
 ```bash
 git clone https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi.git
-cd MiPrimeraPaginaLeivaCecchi
+cd MiPrimeraPaginaLeivaCecchi'
+'''
+2. Crear y activar un entorno virtual (opcional pero recomendado)
+bash
+Copiar
+Editar
+# En Windows
+python -m venv venv
+venv\Scripts\activate
 
-### 2. Crear y activar un entorno virtual (opcional pero recomendado)
+# En Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
+3. Instalar las dependencias del proyecto
+bash
+Copiar
+Editar
+pip install -r requirements.txt
+4. Aplicar las migraciones
+bash
+Copiar
+Editar
+python manage.py migrate
+5. Crear un superusuario para acceder al panel de administración (opcional)
+bash
+Copiar
+Editar
+python manage.py createsuperuser
+6. Ejecutar el servidor local
+bash
+Copiar
+Editar
+python manage.py runserver
+7. Acceder al sitio
+Sitio web: http://127.0.0.1:8000
 
+Panel de administración: http://127.0.0.1:8000/admin
+
+📁 Estructura del proyecto
+php
+Copiar
+Editar
+MiPrimeraPaginaLeivaCecchi/
+├── peliculas/           # App principal: modelos y vistas de películas
+├── usuarios/            # App de autenticación: login, registro, logout
+├── templates/           # Plantillas HTML compartidas por las apps
+├── static/              # Archivos estáticos (CSS, imágenes, JS)
+├── media/               # Archivos subidos (si se usa en producción)
+├── requirements.txt     # Lista de dependencias para instalar
+├── manage.py
+└── MiPrimeraPaginaLeivaCecchi/   # Configuración principal del proyecto

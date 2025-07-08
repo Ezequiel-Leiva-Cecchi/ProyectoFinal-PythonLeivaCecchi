@@ -4,6 +4,7 @@ Repositorio del proyecto final de la cursada de Python/Django, donde construí u
 
 ---
 
+
 ##  Tecnologías utilizadas
 
 -  Python 3.10
@@ -34,6 +35,7 @@ git clone https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi.gi
 cd MiPrimeraPaginaLeivaCecchi
 ```
 ### 2. Crear y activar un entorno virtual (opcional pero recomendado)
+```bash
 # En Windows
 python -m venv venv
 venv\Scripts\activate
@@ -41,16 +43,31 @@ venv\Scripts\activate
 # En Linux/Mac
 python3 -m venv venv
 source venv/bin/activate
+```
 ### 3. Instalar las dependencias del proyecto
+```bash
 pip install -r requirements.txt
+```
 ### 4. Aplicar las migraciones
+```bash
 python manage.py migrate
-### 5. Crear un superusuario para acceder al panel de administración (opcional)
+```
+### 5. Crear un superusuario para acceder al panel de administración
+```bash
 python manage.py createsuperuser
+```
 ### 6. Ejecutar el servidor local
+```bash
 python manage.py runserver
+```
 ### 7. Acceder al sitio
 Sitio web: http://127.0.0.1:8000
-
 Panel de administración: http://127.0.0.1:8000/admin
+
+---
+
+## Notas adicionales
+
+- El archivo `peliculas.csv` está incluido para facilitar la carga masiva de películas desde el panel de administración.
+- La carpeta `media/` también fue incluida para que se vean correctamente los posters ya cargados al clonar y ejecutar el proyecto.
 

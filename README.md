@@ -1,26 +1,37 @@
-# Mi Primera Página – Leiva Cecchi
+#  Mi Primera Página – Leiva Cecchi
 
-Repositorio del proyecto de la cursada de Python/Django, donde construí una web básica de películas con registro de usuarios, login, catálogo y búsqueda.
+Repositorio del proyecto final de la cursada de Python/Django, donde construí una web básica de películas. Este sitio permite a los usuarios registrarse, iniciar sesión, ver un catálogo de películas y buscar por nombre.
 
-## Funcionalidades
--  Registro de usuarios con validación (contraseña, email, etc.)
--  Login y logout con manejo seguro 
--  Página principal (`index`) con lista de películas (título, fecha, poster, géneros, resumen)
--  Búsqueda de películas por título
--  Vista individual de película con detalles ampliados
--  Carga de posters con `ImageField` y tratamiento en backend
--  Administrador de Django para gestionar directores, géneros y películas
--  Protección de vistas importantes usando `@login_required`
 ---
-## Software utilizado
-- Python 3.13
-- Django 5.2.x
-- SQLite (base de datos por defecto)
-- Pillow (para manejo de imágenes)
-- import-export (para cargar datos vía CSV)
+
+##  Tecnologías utilizadas
+
+-  Python 3.10
+-  Django 5.0.1
+-  Bootstrap 5
+-  HTML5 & CSS3
+-  SQLite3 (base de datos por defecto en Django)
+
 ---
-## Instalación y uso
-1. **Clonar el repo**
-   ```bash
-   git clone https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi.git
-   cd MiPrimeraPaginaLeivaCecchi
+
+##  Funcionalidades principales
+
+-  Registro de usuarios con validación.
+-  Inicio y cierre de sesión.
+-  Visualización de un catálogo de películas.
+-  Búsqueda de películas por nombre.
+-  Panel de administración para gestión de películas y usuarios.
+-  Uso de formularios personalizados con Bootstrap.
+-  Organización modular usando múltiples apps Django (`peliculas`, `usuarios`).
+
+## Instalación y ejecución local
+
+Seguí los pasos a continuación para ejecutar el proyecto localmente en tu máquina:
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi.git
+cd MiPrimeraPaginaLeivaCecchi
+
+### 2. Crear y activar un entorno virtual (opcional pero recomendado)
+

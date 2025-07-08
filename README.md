@@ -4,6 +4,52 @@ Repositorio del proyecto final de la cursada de Python/Django, donde construí u
 
 ---
 
+## Estructura del projecto:
+```bash
+MiPrimeraPaginaLeivaCecchi/
+│
+├── media/                         # Imágenes subidas por el admin (posters)
+│
+├── peliculas_app/                # App principal del proyecto
+│   ├── __pycache__/
+│   ├── migrations/
+│   ├── templates/
+│   │   └── peliculas_app/        # Plantillas específicas de la app
+│   │       ├── buscar.html
+│   │       ├── detalle_pelicula.html
+│   │       ├── index.html
+│   │       ├── login.html
+│   │       └── registro.html
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+│
+├── templates/
+│   └── padre.html                # Plantilla base para herencia
+│
+├── TuPrimeraPaginaLeivaCecchi/  # Configuración del proyecto
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+│
+├── venv/                         # Entorno virtual (no se incluye en el repo)
+│
+├── .gitignore                    # Archivos/Carpetas ignoradas por git
+├── db.sqlite3                    # Base de datos local (opcional en el repo)
+├── manage.py                     # Script principal para comandos Django
+├── peliculas.csv                 # Archivo CSV de carga de películas (ver más abajo)
+├── requirements.txt             # Dependencias necesarias
+└── README.md                     # Documentación del proyecto
+```
+
 
 ##  Tecnologías utilizadas
 

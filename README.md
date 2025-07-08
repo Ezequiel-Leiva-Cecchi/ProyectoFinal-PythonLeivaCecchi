@@ -31,8 +31,8 @@ Seguí los pasos a continuación para ejecutar el proyecto localmente en tu máq
 ### 1. Clonar el repositorio
 ```bash
 git clone https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi.git
-cd MiPrimeraPaginaLeivaCecchi'
-'''
+cd MiPrimeraPaginaLeivaCecchi
+```
 2. Crear y activar un entorno virtual (opcional pero recomendado)
 bash
 Copiar

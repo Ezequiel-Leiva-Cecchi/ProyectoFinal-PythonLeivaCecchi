@@ -118,8 +118,8 @@ Panel de administración: http://127.0.0.1:8000/admin
 - La carpeta `media/` también fue incluida para que se vean correctamente los posters ya cargados al clonar y ejecutar el proyecto
 ### Archivos CSV incluidos
 Este proyecto incluye archivos de datos precargados para facilitar las pruebas:
-peliculas.csv:	Lista de películas con géneros y directores
-generos.csv:	Géneros de películas (Acción, Drama, etc.)
-directores.csv:	Nombres de directores conocidos
+- peliculas.csv:	Lista de películas con géneros y directores
+- generos.csv:	Géneros de películas (Acción, Drama, etc.)
+- directores.csv:	Nombres de directores conocidos
 
 

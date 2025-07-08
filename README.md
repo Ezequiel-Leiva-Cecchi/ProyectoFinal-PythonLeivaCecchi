@@ -4,6 +4,55 @@ Repositorio del proyecto final de la cursada de Python/Django, donde construí u
 
 ---
 
+## Estructura del projecto:
+```bash
+MiPrimeraPaginaLeivaCecchi/
+│
+├── media/                         # Imágenes subidas por el admin (posters)
+│
+├── peliculas_app/                # App principal del proyecto
+│   ├── __pycache__/
+│   ├── migrations/
+│   ├── templates/
+│   │   └── peliculas_app/        # Plantillas específicas de la app
+│   │       ├── buscar.html
+│   │       ├── detalle_pelicula.html
+│   │       ├── index.html
+│   │       ├── login.html
+│   │       └── registro.html
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+│
+├── templates/
+│   └── padre.html                # Plantilla base para herencia
+│
+├── TuPrimeraPaginaLeivaCecchi/  # Configuración del proyecto
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+│
+├── venv/                         # Entorno virtual (no se incluye en el repo)
+│
+├── .gitignore                    # Archivos/Carpetas ignoradas por git
+├── db.sqlite3                    # Base de datos local (opcional en el repo)
+├── manage.py                     # Script principal para comandos Django
+├── peliculas.csv                 # Películas precargadas
+├── generos.csv                   # Géneros precargados
+├── directores.csv                # Directores precargados             
+├── requirements.txt             # Dependencias necesarias
+└── README.md                     # Documentación del proyecto
+```
+
+
 ##  Tecnologías utilizadas
 
 -  Python 3.10
@@ -33,7 +82,8 @@ Seguí los pasos a continuación para ejecutar el proyecto localmente en tu máq
 git clone https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi.git
 cd MiPrimeraPaginaLeivaCecchi
 ```
-2. Crear y activar un entorno virtual (opcional pero recomendado)
+### 2. Crear y activar un entorno virtual (opcional pero recomendado)
+```bash
 # En Windows
 python -m venv venv
 venv\Scripts\activate
@@ -41,18 +91,35 @@ venv\Scripts\activate
 # En Linux/Mac
 python3 -m venv venv
 source venv/bin/activate
-3. Instalar las dependencias del proyecto
+```
+### 3. Instalar las dependencias del proyecto
+```bash
 pip install -r requirements.txt
-4. Aplicar las migraciones
+```
+### 4. Aplicar las migraciones
+```bash
 python manage.py migrate
-5. Crear un superusuario para acceder al panel de administración (opcional)
-bash
-
+```
+### 5. Crear un superusuario para acceder al panel de administración
+```bash
 python manage.py createsuperuser
-6. Ejecutar el servidor local
+```
+### 6. Ejecutar el servidor local
+```bash
 python manage.py runserver
-7. Acceder al sitio
+```
+### 7. Acceder al sitio
 Sitio web: http://127.0.0.1:8000
-
 Panel de administración: http://127.0.0.1:8000/admin
+
+---
+
+## Notas adicionales
+- La carpeta `media/` también fue incluida para que se vean correctamente los posters ya cargados al clonar y ejecutar el proyecto
+###Archivos CSV incluidos
+Este proyecto incluye archivos de datos precargados para facilitar las pruebas:
+peliculas.csv:	Lista de películas con géneros y directores
+generos.csv:	Géneros de películas (Acción, Drama, etc.)
+directores.csv:	Nombres de directores conocidos
+
 

@@ -45,7 +45,9 @@ MiPrimeraPaginaLeivaCecchi/
 ├── .gitignore                    # Archivos/Carpetas ignoradas por git
 ├── db.sqlite3                    # Base de datos local (opcional en el repo)
 ├── manage.py                     # Script principal para comandos Django
-├── peliculas.csv                 # Archivo CSV de carga de películas (ver más abajo)
+├── peliculas.csv                 # Películas precargadas
+├── generos.csv                   # Géneros precargados
+├── directores.csv                # Directores precargados             
 ├── requirements.txt             # Dependencias necesarias
 └── README.md                     # Documentación del proyecto
 ```
@@ -113,7 +115,11 @@ Panel de administración: http://127.0.0.1:8000/admin
 ---
 
 ## Notas adicionales
+- La carpeta `media/` también fue incluida para que se vean correctamente los posters ya cargados al clonar y ejecutar el proyecto
+###Archivos CSV incluidos
+Este proyecto incluye archivos de datos precargados para facilitar las pruebas:
+peliculas.csv:	Lista de películas con géneros y directores
+generos.csv:	Géneros de películas (Acción, Drama, etc.)
+directores.csv:	Nombres de directores conocidos
 
-- El archivo `peliculas.csv` está incluido para facilitar la carga masiva de películas desde el panel de administración.
-- La carpeta `media/` también fue incluida para que se vean correctamente los posters ya cargados al clonar y ejecutar el proyecto.
 

@@ -1,27 +1,7 @@
-from django.shortcuts import get_object_or_404, render, redirect
-from .forms import BusquedaForm, RegistroForm
+from django.shortcuts import get_object_or_404, render
+from .forms import BusquedaForm
 from .models import Pelicula
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-
-
-from django.contrib.auth import login
-from django.contrib import messages
-
-def registro(request):
-    if request.method == 'POST':
-        form = RegistroForm(request.POST)
-        if form.is_valid():
-            usuario = form.save()
-            login(request, usuario)
-            return redirect('index')
-        else:
-            print("ERRORES DEL FORMULARIO:")
-            print(form.errors)  
-    else:
-        form = RegistroForm()
-    return render(request, 'peliculas_app/registro.html', {'form': form})
-
 
 
 @login_required

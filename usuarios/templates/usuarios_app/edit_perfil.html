@@ -1,0 +1,7 @@
+{%extend 'padre.html'%}
+{% block content %}
+<h2>Editar Perfil</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Guardar cambios</button>

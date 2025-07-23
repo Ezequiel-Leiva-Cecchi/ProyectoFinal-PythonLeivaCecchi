@@ -1,0 +1,26 @@
+{% extends 'padre.html' %}
+
+{% block title %}Bandeja de entrada{% endblock %}
+
+{% block content %}
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <h2 class="mb-4 text-primary">Bandeja de entrada</h2>
+        <a href="{% url 'enviar_mensaje' %}" class="btn btn-success mb-3">Enviar mensaje</a>
+        <ul class="list-group shadow">
+          {% for mensaje in mensajes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center {% if not mensaje.leido %}list-group-item-info{% endif %}">
+              <a href="{% url 'detalle_mensaje' mensaje.pk %}" class="text-decoration-none">
+                <span class="fw-bold">De: {{ mensaje.emisor.username }}</span> <span class="text-muted small">- {{ mensaje.fecha_envio|date:'d/m/Y H:i' }}</span>
+              </a>
+              {% if not mensaje.leido %}<span class="badge bg-primary">Nuevo</span>{% endif %}
+            </li>
+          {% empty %}
+            <li class="list-group-item text-center">No tienes mensajes.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %} 

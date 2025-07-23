@@ -1,0 +1,11 @@
+{% extends 'padre.html' %}
+
+{% block title %}Detalle del mensaje{% endblock %}
+
+{% block content %}
+  <h2>Mensaje de {{ mensaje.emisor.username }}</h2>
+  <p><strong>Fecha:</strong> {{ mensaje.fecha_envio|date:'d/m/Y H:i' }}</p>
+  <p><strong>Contenido:</strong></p>
+  <p>{{ mensaje.contenido }}</p>
+  <a href="{% url 'bandeja_entrada' %}">Volver a la bandeja</a>
+{% endblock %} 

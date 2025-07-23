@@ -23,7 +23,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('usuarios/', include('usuarios.urls')),
     path('', include('peliculas_app.urls')),
+    path('mensajes/', include('mensajes.urls')),
 ]
 
 if settings.DEBUG:

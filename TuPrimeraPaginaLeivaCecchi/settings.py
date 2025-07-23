@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "peliculas_app",
     'usuarios',
+    'mensajes',
     "import_export",
 ]
 

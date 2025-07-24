@@ -1,0 +1,100 @@
+/* --- Helpers visuales globales y botones modernos --- */
+
+.text-shadow {
+  text-shadow: 1px 1px 6px #0002, 0 2px 8px #0085a133;
+}
+
+.no-select {
+  user-select: none;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.rounded-xl {
+  border-radius: 1.5rem !important;
+}
+
+.bg-glass {
+  background: rgba(255,255,255,0.7) !important;
+  backdrop-filter: blur(6px);
+}
+
+.shadow-lg-2 {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,133,161,0.12) !important;
+}
+
+.transition {
+  transition: all 0.2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+/* --- Botones modernos y animados --- */
+.btn-lindo {
+  background: linear-gradient(90deg, #0085A1 0%, #6a11cb 100%);
+  color: #fff !important;
+  border: none;
+  border-radius: 2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 16px rgba(0,133,161,0.13);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+  padding: 0.5rem 1.7rem;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  outline: none;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-lindo::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 100%);
+  transform: skewX(-20deg);
+  transition: left 0.4s cubic-bezier(.4,0,.2,1);
+  z-index: 2;
+  pointer-events: none;
+}
+.btn-lindo:hover::after, .btn-lindo:focus::after {
+  left: 120%;
+}
+.btn-lindo:hover, .btn-lindo:focus {
+  background: linear-gradient(90deg, #6a11cb 0%, #0085A1 100%);
+  color: #fff !important;
+  transform: scale(1.07) translateY(-2px);
+  box-shadow: 0 8px 32px rgba(106,17,203,0.18);
+  outline: 2px solid #6a11cb;
+  outline-offset: 2px;
+}
+.btn-lindo:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 4px rgba(0,133,161,0.10);
+}
+.btn-lindo:focus-visible {
+  outline: 2.5px solid #0085A1;
+  outline-offset: 2px;
+}
+
+/* Variante secundaria */
+.btn-lindo-secondary {
+  background: linear-gradient(90deg, #6c757d 0%, #adb5bd 100%);
+  color: #fff !important;
+}
+.btn-lindo-secondary:hover, .btn-lindo-secondary:focus {
+  background: linear-gradient(90deg, #adb5bd 0%, #6c757d 100%);
+  color: #fff !important;
+}
+
+/* Variante danger */
+.btn-lindo-danger {
+  background: linear-gradient(90deg, #dc3545 0%, #b31217 100%);
+  color: #fff !important;
+}
+.btn-lindo-danger:hover, .btn-lindo-danger:focus {
+  background: linear-gradient(90deg, #b31217 0%, #dc3545 100%);
+  color: #fff !important;
+} 

@@ -3,11 +3,24 @@
 {% block title %}Enviar mensaje{% endblock %}
 
 {% block content %}
-  <h2>Enviar mensaje</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enviar</button>
-  </form>
-  <a href="{% url 'bandeja_entrada' %}">Volver a la bandeja</a>
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+          <div class="card-body">
+            <h2 class="card-title text-primary mb-4">Enviar mensaje</h2>
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p|safe }}
+              <button type="submit" class="btn btn-success btn-block mt-3 d-flex align-items-center justify-content-center gap-2">
+                <span>Enviar</span>
+                <i class="fas fa-paper-plane fa-lg login-btn-icon"></i>
+              </button>
+              <a href="{% url 'bandeja_entrada' %}" class="btn btn-link mt-3">Volver a la bandeja</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %} 

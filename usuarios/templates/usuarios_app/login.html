@@ -2,16 +2,45 @@
 
 {% block title %}Iniciar sesión{% endblock %}
 
+{% block header %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="/static/css/login.css">
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow rounded-pill mt-3 mx-3" style="background: linear-gradient(90deg, #232526 0%, #414345 100%) !important;">
+  <div class="container">
+    <a class="navbar-brand font-weight-bold mx-auto" href="#"><i class="fas fa-film mr-2"></i>Catálogo de Películas</a>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+  <div class="login-bg d-flex justify-content-center align-items-center min-vh-100">
     <div class="w-100" style="max-width: 400px;">
-      <form method="post" class="shadow p-4 rounded bg-white">
-        <h2 class="mb-4 text-center text-primary">Iniciar sesión</h2>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary w-100 mt-2">Ingresar</button>
-      </form>
-      <p class="mt-3 text-center">¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>
+      <div class="card shadow-lg border-0 login-card bg-glass rounded-xl">
+        <div class="card-body px-4 py-5">
+          <h2 class="mb-4 text-center login-title text-shadow">Iniciar sesión</h2>
+          <form method="post" class="login-form">
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group mb-4">
+                {{ field.label_tag }}
+                {{ field|add_class:'form-control rounded-xl transition shadow-sm' }}
+                {% if field.errors %}
+                  <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <button type="submit" class="login-btn btn-lindo w-100 py-3 mt-2 transition d-flex align-items-center justify-content-center gap-2">
+              <span>Ingresar</span>
+              <i class="fas fa-sign-in-alt fa-lg login-btn-icon"></i>
+            </button>
+          </form>
+          <p class="mt-4 text-center">¿No tienes cuenta? <a href="{% url 'registro' %}" class="login-link">Regístrate aquí</a></p>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}

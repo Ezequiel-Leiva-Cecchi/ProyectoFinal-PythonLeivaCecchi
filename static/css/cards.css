@@ -1,0 +1,29 @@
+/* --- Estilos personalizados para las cards de películas --- */
+.card.poster-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.card.poster-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,133,161,0.12);
+  z-index: 2;
+}
+.btn-detalles {
+  background: linear-gradient(90deg, #0085A1 0%, #6a11cb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,133,161,0.08);
+  transition: background 0.3s, transform 0.2s;
+  padding: 0.5rem 1.5rem;
+}
+.btn-detalles:hover, .btn-detalles:focus {
+  background: linear-gradient(90deg, #6a11cb 0%, #0085A1 100%);
+  color: #fff;
+  transform: scale(1.07);
+  box-shadow: 0 4px 16px rgba(106,17,203,0.15);
+}
+.row.g-5, .row.g-4 {
+  row-gap: 3rem !important;
+} 

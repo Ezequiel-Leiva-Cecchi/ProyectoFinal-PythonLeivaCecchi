@@ -1,0 +1,21 @@
+{% extends 'padre.html' %}
+{% block content %}
+  <div class="d-flex justify-content-center align-items-center" style="min-height: 90vh; background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);">
+    <div class="w-100" style="max-width: 450px;">
+      <div class="card shadow-lg border-0">
+        <div class="card-body">
+          <h2 class="card-title text-primary mb-4 text-center">Editar Perfil</h2>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p|safe }}
+            <button type="submit" class="btn btn-success w-100 mt-3 d-flex align-items-center justify-content-center gap-2">
+              <span>Guardar cambios</span>
+              <i class="fas fa-save fa-lg login-btn-icon"></i>
+            </button>
+            <a href="{% url 'perfil' %}" class="btn btn-link w-100 mt-2">Cancelar</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

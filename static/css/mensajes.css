@@ -1,0 +1,33 @@
+/* --- Estilos personalizados para la bandeja de entrada y mensajes --- */
+.mensajes-card {
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 16px rgba(0,133,161,0.10);
+  border: none;
+  overflow: hidden;
+}
+.mensajes-list-group {
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0,133,161,0.06);
+}
+.mensajes-list-group-item {
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s;
+}
+.mensajes-list-group-item:hover {
+  background: #f0f8ff;
+}
+.mensajes-btn {
+  background: linear-gradient(90deg, #0085A1 0%, #198754 100%);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+  padding: 0.5rem 1.2rem;
+}
+.mensajes-btn:hover, .mensajes-btn:focus {
+  background: linear-gradient(90deg, #198754 0%, #0085A1 100%);
+  color: #fff;
+  transform: scale(1.05);
+} 

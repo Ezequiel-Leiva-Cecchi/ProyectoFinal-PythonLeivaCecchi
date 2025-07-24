@@ -1,0 +1,57 @@
+/* --- Estilos personalizados para el registro de usuario --- */
+.registro-card {
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,133,161,0.12);
+  border: none;
+  overflow: hidden;
+}
+.registro-card .card-body {
+  padding: 2.5rem 2rem 2rem 2rem;
+}
+.registro-title {
+  font-weight: bold;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #198754 0%, #0085A1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.registro-form .form-group label {
+  font-weight: 600;
+  color: #198754;
+  margin-bottom: 0.3rem;
+}
+.registro-form .form-control {
+  border-radius: 1.2rem;
+  border: 1.5px solid #e0e0e0;
+  box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f8fafd;
+}
+.registro-form .form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 2px rgba(25,135,84,0.08);
+  background: #fff;
+}
+.registro-btn {
+  background: linear-gradient(90deg, #198754 0%, #0085A1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(25,135,84,0.08);
+  transition: background 0.3s, transform 0.2s;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.registro-btn:hover, .registro-btn:focus {
+  background: linear-gradient(90deg, #0085A1 0%, #198754 100%);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(25,135,84,0.15);
+} 

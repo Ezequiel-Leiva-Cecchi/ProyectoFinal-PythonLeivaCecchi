@@ -4,12 +4,16 @@ from .models import Director, Genero, Pelicula
 
 @admin.register(Director)
 class DirectorAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['nombre', 'apellido']
+    list_display = ['nombre', 'apellido']
 
 @admin.register(Genero)
 class GeneroAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['nombre']
+    list_display = ['nombre']
 
 @admin.register(Pelicula)
 class PeliculaAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['titulo']
+    list_display = ['titulo', 'fecha_lanzamiento', 'director']
+    list_filter = ['director', 'generos', 'fecha_lanzamiento']

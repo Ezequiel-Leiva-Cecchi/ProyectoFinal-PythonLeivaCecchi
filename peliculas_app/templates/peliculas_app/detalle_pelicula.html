@@ -21,8 +21,8 @@
             <p class="mb-2"><strong>Géneros:</strong> {% for genero in pelicula.generos.all %}{{ genero.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
             <p class="mb-3"><strong>Resumen:</strong> {{ pelicula.mini_resumen }}</p>
             {% if user.is_authenticated %}
-              <a href="{% url 'pelicula_editar' pelicula.id %}" class="btn btn-lindo transition pointer mr-2">Editar</a>
-              <a href="{% url 'pelicula_eliminar' pelicula.id %}" class="btn btn-danger btn-lindo transition pointer mr-2">Eliminar</a>
+              <a href="{% url 'pelicula_editar' pelicula.id %}" class="btn btn-warning btn-lindo transition pointer mr-2">Editar</a>
+              <a href="{% url 'pelicula_borrar' pelicula.id %}" class="btn btn-danger btn-lindo transition pointer mr-2">Eliminar</a>
             {% endif %}
             <a href="{% url 'index' %}" class="btn btn-secondary btn-lindo transition pointer">Volver</a>
           </div>

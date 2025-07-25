@@ -13,7 +13,7 @@
                 <h1 class="display-4 fw-bold text-primary mb-2 text-shadow">Catálogo de Películas</h1>
                 <p class="lead text-muted mb-4">Descubre, busca y comparte tus películas favoritas. ¡Explora el catálogo o agrega tus propias recomendaciones!</p>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'pelicula_crear' %}" class="btn btn-lindo btn-lg shadow-lg-2 transition mb-2 pointer rounded-xl"><i class="fas fa-plus"></i> Agregar nueva película</a>
+                    <a href="{% url 'pelicula_crear' %}" class="btn btn-success btn-lindo btn-lg shadow-lg-2 transition mb-2 pointer rounded-xl"><i class="fas fa-plus"></i> Agregar nueva película</a>
                 {% endif %}
             </div>
         </div>
@@ -31,7 +31,7 @@
                                 <p class="card-text text-muted mb-2 flex-grow-1">{{ pelicula.mini_resumen|truncatechars:80 }}</p>
                                 <p class="card-text mb-1"><i class="fas fa-video"></i> Dirigida por <strong>{{ pelicula.director }}</strong></p>
                                 <p class="card-text"><i class="fas fa-calendar-alt"></i> Estrenada el {{ pelicula.fecha_lanzamiento|date:'d/m/Y' }}</p>
-                                <a href="{% url 'detalle_pelicula' pelicula.id %}" class="btn btn-lindo mt-3 align-self-end transition pointer rounded-xl">Ver detalles</a>
+                                <a href="{% url 'detalle_pelicula' pelicula.id %}" class="btn btn-info btn-lindo mt-3 align-self-end transition pointer rounded-xl d-inline-flex align-items-center gap-2">Ver detalles <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>

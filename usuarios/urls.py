@@ -2,11 +2,12 @@ from django.urls import path
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
+from .forms import LoginForm
 
 urlpatterns = [
     path("registro/", views.registro, name="registro"),
     
-    path("login/", LoginView.as_view(template_name="usuarios/login.html"), name="login"),
+    path("login/", LoginView.as_view(template_name="usuarios/login.html", authentication_form=LoginForm), name="login"),
     
     path("logout/", LogoutView.as_view(next_page="index"), name="logout"),
     

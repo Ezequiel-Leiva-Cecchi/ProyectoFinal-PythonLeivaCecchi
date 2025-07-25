@@ -2,6 +2,10 @@
 
 {% block title %}Enviar mensaje{% endblock %}
 
+{% block extra_css %}
+  <link rel="stylesheet" href="/static/css/cards.css">
+{% endblock %}
+
 {% block content %}
   <div class="container py-4">
     <div class="row justify-content-center">
@@ -12,7 +16,7 @@
             <form method="post">
               {% csrf_token %}
               {{ form.as_p|safe }}
-              <button type="submit" class="btn btn-success btn-block mt-3 d-flex align-items-center justify-content-center gap-2">
+              <button type="submit" class="btn btn-detalles btn-block mt-3 d-flex align-items-center justify-content-center gap-2">
                 <span>Enviar</span>
                 <i class="fas fa-paper-plane fa-lg login-btn-icon"></i>
               </button>

@@ -264,11 +264,7 @@ python manage.py runserver
 - **Feedback Visual**: Mensajes de confirmación y error
 
 ---
-
-## 📸 Capturas de Pantalla
-
-### Página Principal
-![Página Principal](static/assets/img/home-bg.jpg)
+## Página Principal
 
 ### Catálogo de Películas
 - Vista de tarjetas con posters
@@ -371,23 +367,12 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 - GitHub: [@Ezequiel-Leiva-Cecchi](https://github.com/Ezequiel-Leiva-Cecchi)
 - Proyecto: Mi Primera Página - Leiva Cecchi
 
----
-
-## 🙏 Agradecimientos
-
-- **Django Community** por el excelente framework
-- **Bootstrap** por los componentes de UI
-- **Python Software Foundation** por el lenguaje
-- **Profesores y compañeros** de la cursada de Python/Django
-
----
-
 ## 📞 Contacto
 
 Si tienes alguna pregunta o sugerencia sobre el proyecto:
 
-- 📧 Email: [Tu email aquí]
-- 💬 GitHub Issues: [Crear un issue](https://github.com/Ezequiel-Leiva-Cecchi/MiPrimeraPaginaLeivaCecchi/issues)
+- 📧 Email: [ezequielleivacecchi@gmail.com]
+- Linkedin: [https://www.linkedin.com/in/ezequiel-leiva-cecchi-021356212/]
 
 ---
 

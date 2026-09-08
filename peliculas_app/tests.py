@@ -52,6 +52,18 @@ class CineVaultTests(TestCase):
         self.assertEqual(response.context["total_resultados"], 14)
         self.assertContains(response, f"genero={self.genero.pk}")
 
+    def test_busqueda_oculta_variantes_duplicadas(self):
+        Pelicula.objects.create(
+            titulo="Kill Bill Vol. 1",
+            fecha_lanzamiento=date(2003, 10, 10),
+            mini_resumen="Una variante importada desde el catálogo viejo.",
+            director=self.director,
+        )
+
+        response = self.client.get(reverse("buscar_pelicula"), {"q": "Kill Bill"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total_resultados"], 1)
+
     def test_inicio_no_repite_peliculas_entre_secciones(self):
         response = self.client.get(reverse("index"))
         mostradas = []

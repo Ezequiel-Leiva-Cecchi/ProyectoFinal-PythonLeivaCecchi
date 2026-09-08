@@ -1,8 +1,11 @@
 from datetime import date
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+
 from .models import Director, EnLista, Genero, Pelicula, Resena
+from .views import _clave_pelicula
 
 
 class CineVaultTests(TestCase):
@@ -48,6 +51,26 @@ class CineVaultTests(TestCase):
         self.assertEqual(response.context["page_obj"].number, 2)
         self.assertEqual(response.context["total_resultados"], 14)
         self.assertContains(response, f"genero={self.genero.pk}")
+
+    def test_inicio_no_repite_peliculas_entre_secciones(self):
+        response = self.client.get(reverse("index"))
+        mostradas = []
+        if response.context["destacada"]:
+            mostradas.append(response.context["destacada"])
+        mostradas.extend(response.context["peliculas"])
+        mostradas.extend(response.context["mejor_valoradas"])
+
+        claves = [_clave_pelicula(pelicula) for pelicula in mostradas]
+        self.assertEqual(len(claves), len(set(claves)))
+
+    def test_catalogo_legacy_recupera_poster_versionado(self):
+        pelicula = Pelicula.objects.create(
+            titulo="Kill Bill Vol. 1",
+            fecha_lanzamiento=date(2003, 10, 10),
+            mini_resumen="Una asesina busca venganza.",
+            director=self.director,
+        )
+        self.assertIn("Kill_Bill__Volume_1_by_Paul_Mann.jpeg", pelicula.poster_url)
 
     def test_lista_personal_agrega_y_elimina_sin_duplicar(self):
         self.client.force_login(self.user)

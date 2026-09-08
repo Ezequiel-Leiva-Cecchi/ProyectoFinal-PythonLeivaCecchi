@@ -2,6 +2,11 @@ const toggle = document.querySelector('.nav-toggle');
 const links = document.querySelector('.nav-links');
 
 if (toggle && links) {
+  const closeMenu = () => {
+    toggle.setAttribute('aria-expanded', 'false');
+    links.classList.remove('is-open');
+  };
+
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
@@ -9,10 +14,20 @@ if (toggle && links) {
   });
 
   links.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      toggle.setAttribute('aria-expanded', 'false');
-      links.classList.remove('is-open');
-    });
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) {
+      closeMenu();
+    }
   });
 }
 

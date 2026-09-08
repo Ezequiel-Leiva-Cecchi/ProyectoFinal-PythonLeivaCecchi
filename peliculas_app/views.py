@@ -38,7 +38,7 @@ def _clave_pelicula(pelicula):
     return titulo, pelicula.fecha_lanzamiento
 
 
-def _tomar_peliculas_unicas(queryset, cantidad, claves_excluidas=None):
+def _tomar_peliculas_unicas(queryset, cantidad=None, claves_excluidas=None):
     """Selecciona películas visualmente únicas sin alterar registros existentes."""
     claves = set(claves_excluidas or ())
     seleccion = []
@@ -49,7 +49,7 @@ def _tomar_peliculas_unicas(queryset, cantidad, claves_excluidas=None):
             continue
         claves.add(clave)
         seleccion.append(pelicula)
-        if len(seleccion) == cantidad:
+        if cantidad is not None and len(seleccion) == cantidad:
             break
 
     return seleccion, claves
@@ -85,6 +85,13 @@ def index(request):
         for genero in pelicula.generos.all():
             generos[genero.nombre] = genero
 
+    total_peliculas = len(
+        {
+            _clave_pelicula(pelicula)
+            for pelicula in Pelicula.objects.only("titulo", "fecha_lanzamiento")
+        }
+    )
+
     return render(
         request,
         "peliculas_app/index.html",
@@ -93,7 +100,7 @@ def index(request):
             "destacada": destacada,
             "mejor_valoradas": mejor_valoradas,
             "generos_destacados": list(generos.values())[:6],
-            "total_peliculas": Pelicula.objects.count(),
+            "total_peliculas": total_peliculas,
             "total_resenas_global": Resena.objects.count(),
         },
     )
@@ -137,7 +144,8 @@ def buscar_pelicula(request):
             *campos_orden.get(orden, campos_orden["recientes"])
         ).distinct()
 
-    paginator = Paginator(resultados, 12)
+    resultados_unicos, _ = _tomar_peliculas_unicas(resultados)
+    paginator = Paginator(resultados_unicos, 12)
     page_obj = paginator.get_page(request.GET.get("page"))
     query_params = request.GET.copy()
     query_params.pop("page", None)
@@ -168,11 +176,13 @@ def detalle_pelicula(request, pelicula_id):
             usuario=request.user, pelicula=pelicula
         ).first()
 
-    relacionados = (
+    relacionados, _ = _tomar_peliculas_unicas(
         _peliculas_con_metricas()
         .filter(generos__in=pelicula.generos.all())
         .exclude(pk=pelicula.pk)
-        .distinct()[:4]
+        .distinct(),
+        4,
+        {_clave_pelicula(pelicula)},
     )
 
     return render(

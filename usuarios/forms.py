@@ -14,6 +14,8 @@ class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["username"].label = "Nombre de usuario"
+        self.fields["password"].label = "Contraseña"
         self.fields["username"].widget.attrs.update(
             {
                 "placeholder": "Tu usuario",
@@ -48,26 +50,31 @@ class RegistroForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]
-        labels = {
-            "username": "Nombre de usuario",
-            "password1": "Contraseña",
-            "password2": "Confirmar contraseña",
-        }
         error_messages = {
             "username": {
                 "required": "El nombre de usuario es obligatorio.",
                 "unique": "Este nombre de usuario ya está en uso.",
             },
-            "password1": {
-                "required": "La contraseña es obligatoria.",
-            },
-            "password2": {
-                "required": "Debés confirmar la contraseña.",
-            },
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.fields["username"].label = "Nombre de usuario"
+        self.fields["email"].label = "Correo electrónico"
+        self.fields["password1"].label = "Contraseña"
+        self.fields["password2"].label = "Confirmar contraseña"
+
+        self.fields["username"].help_text = (
+            "Hasta 150 caracteres. Podés usar letras, números y @/./+/-/_."
+        )
+        self.fields["password1"].help_text = (
+            "Usá al menos 8 caracteres y evitá contraseñas demasiado comunes."
+        )
+        self.fields["password2"].help_text = (
+            "Repetí la misma contraseña para confirmarla."
+        )
+
         self.fields["username"].widget.attrs.update(
             {
                 "placeholder": "Elegí un nombre de usuario",

@@ -1,14 +1,15 @@
-from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Avg, Count, F, Q
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.paginator import Paginator
+from django.db.models import Avg, Count, F, Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
+from django.views.generic import CreateView, DeleteView, UpdateView
+
 from .forms import BusquedaForm, ResenaForm
 from .models import EnLista, Pelicula, Resena
-from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.urls import reverse_lazy
 
 
 def _peliculas_con_metricas():
@@ -31,10 +32,23 @@ def index(request):
         "-total_guardadas",
         "-fecha_lanzamiento",
     ).first()
-    peliculas = list(catalogo.order_by("-fecha_lanzamiento", "titulo")[:8])
-    mejor_valoradas = catalogo.filter(total_resenas__gt=0).order_by(
-        F("puntuacion_media").desc(nulls_last=True), "-total_resenas", "titulo"
-    )[:4]
+
+    ids_excluidos = [destacada.pk] if destacada else []
+    peliculas = list(
+        catalogo.exclude(pk__in=ids_excluidos)
+        .order_by("-fecha_lanzamiento", "titulo")[:4]
+    )
+    ids_excluidos.extend(pelicula.pk for pelicula in peliculas)
+
+    mejor_valoradas = (
+        catalogo.exclude(pk__in=ids_excluidos)
+        .filter(total_resenas__gt=0)
+        .order_by(
+            F("puntuacion_media").desc(nulls_last=True),
+            "-total_resenas",
+            "titulo",
+        )[:4]
+    )
 
     generos = {}
     for pelicula in peliculas:
@@ -180,7 +194,9 @@ def guardar_resena(request, pelicula_id):
         )
         messages.success(request, "Tu reseña quedó guardada.")
     else:
-        messages.error(request, "Revisá la puntuación o el comentario antes de guardar.")
+        messages.error(
+            request, "Revisá la puntuación o el comentario antes de guardar."
+        )
     return redirect("detalle_pelicula", pelicula_id=pelicula_id)
 
 
@@ -202,14 +218,28 @@ class StaffRequiredMixin(UserPassesTestMixin):
 
 class PeliculaCreateView(StaffRequiredMixin, CreateView):
     model = Pelicula
-    fields = ["titulo", "fecha_lanzamiento", "mini_resumen", "director", "generos", "imagen"]
+    fields = [
+        "titulo",
+        "fecha_lanzamiento",
+        "mini_resumen",
+        "director",
+        "generos",
+        "imagen",
+    ]
     template_name = "peliculas_app/pelicula_form.html"
     success_url = reverse_lazy("index")
 
 
 class PeliculaUpdateView(StaffRequiredMixin, UpdateView):
     model = Pelicula
-    fields = ["titulo", "fecha_lanzamiento", "mini_resumen", "director", "generos", "imagen"]
+    fields = [
+        "titulo",
+        "fecha_lanzamiento",
+        "mini_resumen",
+        "director",
+        "generos",
+        "imagen",
+    ]
     template_name = "peliculas_app/pelicula_form.html"
     success_url = reverse_lazy("index")
 

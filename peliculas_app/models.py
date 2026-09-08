@@ -9,6 +9,20 @@ from django.templatetags.static import static
 from django.utils import timezone
 
 
+POSTERS_CATALOGO = {
+    ("jurassic park", 1993): "Jurassic_Park_1993_768_x_1152_by_John_Guydo.jpeg",
+    ("salvar al soldado ryan", 1998): "salvar_al_sodadoRyan.jpeg",
+    ("inception", 2010): "Inception_2010.jpeg",
+    ("dunkerque", 2017): "Dunkirk.jpeg",
+    ("dunkirk", 2017): "Dunkirk.jpeg",
+    ("pulp fiction", 1994): "pulp_fiction.jpeg",
+    ("kill bill: volumen 1", 2003): "Kill_Bill__Volume_1_by_Paul_Mann.jpeg",
+    ("kill bill volumen 1", 2003): "Kill_Bill__Volume_1_by_Paul_Mann.jpeg",
+    ("kill bill vol. 1", 2003): "Kill_Bill__Volume_1_by_Paul_Mann.jpeg",
+    ("kill bill: vol. 1", 2003): "Kill_Bill__Volume_1_by_Paul_Mann.jpeg",
+}
+
+
 class Director(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
@@ -34,12 +48,6 @@ class Pelicula(models.Model):
 
     class Meta:
         ordering = ("-fecha_lanzamiento", "titulo")
-        constraints = [
-            models.UniqueConstraint(
-                fields=("titulo", "fecha_lanzamiento"),
-                name="pelicula_titulo_fecha_unica",
-            )
-        ]
 
     def clean(self):
         if not self.titulo.strip():
@@ -60,20 +68,26 @@ class Pelicula(models.Model):
 
     @property
     def poster_url(self):
-        """Devuelve un póster sólo cuando el archivo realmente está disponible."""
-        if not self.imagen:
-            return ""
+        """Prioriza archivos versionados y evita mostrar imágenes rotas."""
+        if self.imagen:
+            filename = Path(self.imagen.name).name
+            static_poster = settings.BASE_DIR / "static" / "posters" / filename
+            if static_poster.exists():
+                return static(f"posters/{filename}")
 
-        filename = Path(self.imagen.name).name
-        static_poster = settings.BASE_DIR / "static" / "posters" / filename
-        if static_poster.exists():
-            return static(f"posters/{filename}")
+            try:
+                if self.imagen.storage.exists(self.imagen.name):
+                    return self.imagen.url
+            except (OSError, ValueError, NotImplementedError):
+                pass
 
-        try:
-            if self.imagen.storage.exists(self.imagen.name):
-                return self.imagen.url
-        except (OSError, ValueError, NotImplementedError):
-            pass
+        # Compatibilidad con registros importados desde el CSV original,
+        # donde la columna de imagen estaba vacía.
+        fallback = POSTERS_CATALOGO.get((self.titulo.strip().casefold(), self.anio))
+        if fallback:
+            fallback_path = settings.BASE_DIR / "static" / "posters" / fallback
+            if fallback_path.exists():
+                return static(f"posters/{fallback}")
 
         return ""
 

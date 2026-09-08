@@ -1,14 +1,23 @@
-from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Avg, Count, F, Q
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.paginator import Paginator
+from django.db.models import Avg, Count, F, Q
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
+from django.views.generic import CreateView, DeleteView, UpdateView
+
 from .forms import BusquedaForm, ResenaForm
 from .models import EnLista, Pelicula, Resena
-from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.urls import reverse_lazy
+
+
+TITULOS_EQUIVALENTES = {
+    "dunkirk": "dunkerque",
+    "kill bill vol. 1": "kill bill: volumen 1",
+    "kill bill volumen 1": "kill bill: volumen 1",
+    "kill bill: vol. 1": "kill bill: volumen 1",
+}
 
 
 def _peliculas_con_metricas():
@@ -23,6 +32,29 @@ def _peliculas_con_metricas():
     )
 
 
+def _clave_pelicula(pelicula):
+    titulo = pelicula.titulo.strip().casefold()
+    titulo = TITULOS_EQUIVALENTES.get(titulo, titulo)
+    return titulo, pelicula.fecha_lanzamiento
+
+
+def _tomar_peliculas_unicas(queryset, cantidad=None, claves_excluidas=None):
+    """Selecciona películas visualmente únicas sin alterar registros existentes."""
+    claves = set(claves_excluidas or ())
+    seleccion = []
+
+    for pelicula in queryset:
+        clave = _clave_pelicula(pelicula)
+        if clave in claves:
+            continue
+        claves.add(clave)
+        seleccion.append(pelicula)
+        if cantidad is not None and len(seleccion) == cantidad:
+            break
+
+    return seleccion, claves
+
+
 def index(request):
     catalogo = _peliculas_con_metricas()
     destacada = catalogo.order_by(
@@ -31,15 +63,34 @@ def index(request):
         "-total_guardadas",
         "-fecha_lanzamiento",
     ).first()
-    peliculas = list(catalogo.order_by("-fecha_lanzamiento", "titulo")[:8])
-    mejor_valoradas = catalogo.filter(total_resenas__gt=0).order_by(
-        F("puntuacion_media").desc(nulls_last=True), "-total_resenas", "titulo"
-    )[:4]
+
+    claves_usadas = {_clave_pelicula(destacada)} if destacada else set()
+    peliculas, claves_usadas = _tomar_peliculas_unicas(
+        catalogo.order_by("-fecha_lanzamiento", "titulo"),
+        4,
+        claves_usadas,
+    )
+    mejor_valoradas, _ = _tomar_peliculas_unicas(
+        catalogo.filter(total_resenas__gt=0).order_by(
+            F("puntuacion_media").desc(nulls_last=True),
+            "-total_resenas",
+            "titulo",
+        ),
+        4,
+        claves_usadas,
+    )
 
     generos = {}
     for pelicula in peliculas:
         for genero in pelicula.generos.all():
             generos[genero.nombre] = genero
+
+    total_peliculas = len(
+        {
+            _clave_pelicula(pelicula)
+            for pelicula in Pelicula.objects.only("titulo", "fecha_lanzamiento")
+        }
+    )
 
     return render(
         request,
@@ -49,7 +100,7 @@ def index(request):
             "destacada": destacada,
             "mejor_valoradas": mejor_valoradas,
             "generos_destacados": list(generos.values())[:6],
-            "total_peliculas": Pelicula.objects.count(),
+            "total_peliculas": total_peliculas,
             "total_resenas_global": Resena.objects.count(),
         },
     )
@@ -93,7 +144,8 @@ def buscar_pelicula(request):
             *campos_orden.get(orden, campos_orden["recientes"])
         ).distinct()
 
-    paginator = Paginator(resultados, 12)
+    resultados_unicos, _ = _tomar_peliculas_unicas(resultados)
+    paginator = Paginator(resultados_unicos, 12)
     page_obj = paginator.get_page(request.GET.get("page"))
     query_params = request.GET.copy()
     query_params.pop("page", None)
@@ -124,11 +176,13 @@ def detalle_pelicula(request, pelicula_id):
             usuario=request.user, pelicula=pelicula
         ).first()
 
-    relacionados = (
+    relacionados, _ = _tomar_peliculas_unicas(
         _peliculas_con_metricas()
         .filter(generos__in=pelicula.generos.all())
         .exclude(pk=pelicula.pk)
-        .distinct()[:4]
+        .distinct(),
+        4,
+        {_clave_pelicula(pelicula)},
     )
 
     return render(
@@ -180,7 +234,9 @@ def guardar_resena(request, pelicula_id):
         )
         messages.success(request, "Tu reseña quedó guardada.")
     else:
-        messages.error(request, "Revisá la puntuación o el comentario antes de guardar.")
+        messages.error(
+            request, "Revisá la puntuación o el comentario antes de guardar."
+        )
     return redirect("detalle_pelicula", pelicula_id=pelicula_id)
 
 
@@ -202,14 +258,28 @@ class StaffRequiredMixin(UserPassesTestMixin):
 
 class PeliculaCreateView(StaffRequiredMixin, CreateView):
     model = Pelicula
-    fields = ["titulo", "fecha_lanzamiento", "mini_resumen", "director", "generos", "imagen"]
+    fields = [
+        "titulo",
+        "fecha_lanzamiento",
+        "mini_resumen",
+        "director",
+        "generos",
+        "imagen",
+    ]
     template_name = "peliculas_app/pelicula_form.html"
     success_url = reverse_lazy("index")
 
 
 class PeliculaUpdateView(StaffRequiredMixin, UpdateView):
     model = Pelicula
-    fields = ["titulo", "fecha_lanzamiento", "mini_resumen", "director", "generos", "imagen"]
+    fields = [
+        "titulo",
+        "fecha_lanzamiento",
+        "mini_resumen",
+        "director",
+        "generos",
+        "imagen",
+    ]
     template_name = "peliculas_app/pelicula_form.html"
     success_url = reverse_lazy("index")
 

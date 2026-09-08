@@ -12,6 +12,14 @@ from .forms import BusquedaForm, ResenaForm
 from .models import EnLista, Pelicula, Resena
 
 
+TITULOS_EQUIVALENTES = {
+    "dunkirk": "dunkerque",
+    "kill bill vol. 1": "kill bill: volumen 1",
+    "kill bill volumen 1": "kill bill: volumen 1",
+    "kill bill: vol. 1": "kill bill: volumen 1",
+}
+
+
 def _peliculas_con_metricas():
     return (
         Pelicula.objects.select_related("director")
@@ -24,6 +32,29 @@ def _peliculas_con_metricas():
     )
 
 
+def _clave_pelicula(pelicula):
+    titulo = pelicula.titulo.strip().casefold()
+    titulo = TITULOS_EQUIVALENTES.get(titulo, titulo)
+    return titulo, pelicula.fecha_lanzamiento
+
+
+def _tomar_peliculas_unicas(queryset, cantidad, claves_excluidas=None):
+    """Selecciona películas visualmente únicas sin alterar registros existentes."""
+    claves = set(claves_excluidas or ())
+    seleccion = []
+
+    for pelicula in queryset:
+        clave = _clave_pelicula(pelicula)
+        if clave in claves:
+            continue
+        claves.add(clave)
+        seleccion.append(pelicula)
+        if len(seleccion) == cantidad:
+            break
+
+    return seleccion, claves
+
+
 def index(request):
     catalogo = _peliculas_con_metricas()
     destacada = catalogo.order_by(
@@ -33,21 +64,20 @@ def index(request):
         "-fecha_lanzamiento",
     ).first()
 
-    ids_excluidos = [destacada.pk] if destacada else []
-    peliculas = list(
-        catalogo.exclude(pk__in=ids_excluidos)
-        .order_by("-fecha_lanzamiento", "titulo")[:4]
+    claves_usadas = {_clave_pelicula(destacada)} if destacada else set()
+    peliculas, claves_usadas = _tomar_peliculas_unicas(
+        catalogo.order_by("-fecha_lanzamiento", "titulo"),
+        4,
+        claves_usadas,
     )
-    ids_excluidos.extend(pelicula.pk for pelicula in peliculas)
-
-    mejor_valoradas = (
-        catalogo.exclude(pk__in=ids_excluidos)
-        .filter(total_resenas__gt=0)
-        .order_by(
+    mejor_valoradas, _ = _tomar_peliculas_unicas(
+        catalogo.filter(total_resenas__gt=0).order_by(
             F("puntuacion_media").desc(nulls_last=True),
             "-total_resenas",
             "titulo",
-        )[:4]
+        ),
+        4,
+        claves_usadas,
     )
 
     generos = {}

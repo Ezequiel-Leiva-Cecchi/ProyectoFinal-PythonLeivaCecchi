@@ -1,11 +1,12 @@
-from django.db import models
-from django.core.exceptions import ValidationError
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.conf import settings
-from django.templatetags.static import static
 from pathlib import Path
+
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.templatetags.static import static
+from django.utils import timezone
 
 
 class Director(models.Model):
@@ -29,21 +30,26 @@ class Pelicula(models.Model):
     mini_resumen = models.TextField()
     director = models.ForeignKey(Director, on_delete=models.CASCADE)
     generos = models.ManyToManyField(Genero)
-    imagen = models.ImageField(upload_to='posters/', blank=True, null=True)
+    imagen = models.ImageField(upload_to="posters/", blank=True, null=True)
 
     class Meta:
         ordering = ("-fecha_lanzamiento", "titulo")
+        constraints = [
+            models.UniqueConstraint(
+                fields=("titulo", "fecha_lanzamiento"),
+                name="pelicula_titulo_fecha_unica",
+            )
+        ]
 
     def clean(self):
-        # Validar que el título no esté vacío
         if not self.titulo.strip():
-            raise ValidationError({'titulo': 'El título no puede estar vacío.'})
-        # Validar que el mini_resumen no esté vacío
+            raise ValidationError({"titulo": "El título no puede estar vacío."})
         if not self.mini_resumen.strip():
-            raise ValidationError({'mini_resumen': 'El resumen no puede estar vacío.'})
-        # Validar que la fecha de lanzamiento no sea futura
+            raise ValidationError({"mini_resumen": "El resumen no puede estar vacío."})
         if self.fecha_lanzamiento > timezone.now().date():
-            raise ValidationError({'fecha_lanzamiento': 'La fecha de lanzamiento no puede ser futura.'})
+            raise ValidationError(
+                {"fecha_lanzamiento": "La fecha de lanzamiento no puede ser futura."}
+            )
 
     def __str__(self):
         return self.titulo
@@ -54,18 +60,29 @@ class Pelicula(models.Model):
 
     @property
     def poster_url(self):
-        """Usa pósteres versionados en producción y conserva uploads externos."""
+        """Devuelve un póster sólo cuando el archivo realmente está disponible."""
         if not self.imagen:
             return ""
+
         filename = Path(self.imagen.name).name
-        if (settings.BASE_DIR / "static" / "posters" / filename).exists():
+        static_poster = settings.BASE_DIR / "static" / "posters" / filename
+        if static_poster.exists():
             return static(f"posters/{filename}")
-        return self.imagen.url
+
+        try:
+            if self.imagen.storage.exists(self.imagen.name):
+                return self.imagen.url
+        except (OSError, ValueError, NotImplementedError):
+            pass
+
+        return ""
 
 
 class Resena(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="resenas")
-    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, related_name="resenas")
+    pelicula = models.ForeignKey(
+        Pelicula, on_delete=models.CASCADE, related_name="resenas"
+    )
     puntuacion = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
@@ -86,8 +103,12 @@ class Resena(models.Model):
 
 
 class EnLista(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="lista_cine")
-    pelicula = models.ForeignKey(Pelicula, on_delete=models.CASCADE, related_name="en_listas")
+    usuario = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="lista_cine"
+    )
+    pelicula = models.ForeignKey(
+        Pelicula, on_delete=models.CASCADE, related_name="en_listas"
+    )
     agregada = models.DateTimeField(auto_now_add=True)
 
     class Meta:
